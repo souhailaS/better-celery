@@ -11,7 +11,7 @@ pub async fn make_pool() -> Result<PgPool> {
         .max_connections(10)
         .connect(&url)
         .await?;
-    sqlx::query_scalar::<_, i64>("SELECT 1").fetch_one(&pool).await?;
+    sqlx::query_scalar::<_, i32>("SELECT 1").fetch_one(&pool).await?;
     Ok(pool)
 }
 
