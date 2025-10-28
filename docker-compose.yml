@@ -25,7 +25,7 @@ services:
     entrypoint: ["/bin/sh","-c"]
     command: >
       "until pg_isready -h db -U postgres; do echo waiting for db; sleep 1; done &&
-       psql -h db -U postgres -d jobe -f /migrations/0001_init.sql"
+       psql -h db -U postgres -d better-celery -f /migrations/0001_init.sql"
 
   coordinator:
     build:
