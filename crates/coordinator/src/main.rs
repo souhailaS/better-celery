@@ -1,3 +1,6 @@
+mod api;
+mod db;
+
 use axum::{Router, routing::{get, post}};
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::{fmt, EnvFilter};
