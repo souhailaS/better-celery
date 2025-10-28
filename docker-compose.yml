@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: jobe
+      POSTGRES_DB: better-celery
     ports:
       - "5432:5432"
     volumes:
@@ -34,7 +34,7 @@ services:
     container_name: bettercelery_coordinator
     restart: always
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/jobe
+      DATABASE_URL: postgres://postgres:postgres@db:5432/better-celery
       RUST_LOG: info
     ports:
       - "8080:8080"
