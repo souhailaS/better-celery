@@ -1,5 +1,5 @@
 # BUILD
-FROM rust:1.81-slim AS builder
+FROM rustlang/rust:nightly-slim AS builder
 
 WORKDIR /app
 COPY . .

@@ -1,9 +1,9 @@
 [workspace]
 members = ["crates/coordinator", "crates/worker"]
-resolver = "3"
+resolver = "2"
 
 [workspace.package]
-edition = "2024"
+edition = "2021"
 
 [workspace.dependencies]
 anyhow = "1.0.89"
