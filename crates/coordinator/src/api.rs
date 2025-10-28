@@ -55,7 +55,7 @@ pub async fn create_job(
     }))
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, sqlx::FromRow)]
 pub struct JobRecord {
     pub id: Uuid,
     pub name: String,
@@ -67,11 +67,10 @@ pub async fn get_job(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<JobRecord>, axum::http::StatusCode> {
-    let rec = sqlx::query_as!(
-        JobRecord,
-        r#"SELECT id, name, dag, status FROM jobs WHERE id = $1"#,
-        id
+    let rec = sqlx::query_as::<_, JobRecord>(
+        r#"SELECT id, name, dag, status FROM jobs WHERE id = $1"#
     )
+    .bind(id)
     .fetch_one(&state.pool)
     .await
     .map_err(|_| axum::http::StatusCode::NOT_FOUND)?;
