@@ -16,16 +16,16 @@ pub async fn make_pool() -> Result<PgPool> {
 }
 
 pub async fn insert_job(pool: &PgPool, name: &str, dag: &Value) -> Result<Uuid> {
-    let rec = sqlx::query!(
+    let rec = sqlx::query_scalar::<_, Uuid>(
         r#"
         INSERT INTO jobs (name, dag)
         VALUES ($1, $2)
         RETURNING id
-        "#,
-        name,
-        dag
+        "#
     )
+    .bind(name)
+    .bind(dag)
     .fetch_one(pool)
     .await?;
-    Ok(rec.id)
+    Ok(rec)
 }
