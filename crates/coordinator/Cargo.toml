@@ -1,0 +1,12 @@
+[package]
+name = "coordinator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.6"
+dotenvy = "0.15.7"
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json"] }
+tokio = "1.48.0"
+tower = "0.5.2"
+tower-http = "0.6.6"

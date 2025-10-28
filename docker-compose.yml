@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: bettercelery_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jobe
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  migrate:
+    image: postgres:16
+    depends_on:
+      - db
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./migrations:/migrations:ro
+    entrypoint: ["/bin/sh","-c"]
+    command: >
+      "until pg_isready -h db -U postgres; do echo waiting for db; sleep 1; done &&
+       psql -h db -U postgres -d jobe -f /migrations/0001_init.sql"
+
+  coordinator:
+    build:
+      context: .
+      dockerfile: docker/coordinator.Dockerfile
+    container_name: bettercelery_coordinator
+    restart: always
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/jobe
+      RUST_LOG: info
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - migrate
+
+volumes:
+  pgdata:
